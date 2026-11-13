@@ -1,0 +1,18 @@
+---
+import Reel from "./Reel.astro";
+import type { Reel as ReelType } from "../types/Reel";
+
+interface Props {
+    items: ReelType[];
+    title?: string;
+    subtitle?: string;
+}
+
+const { items } = Astro.props;
+---
+
+<section class="flex w-full gap-5 infinite-scroll infinite-track" >
+    {items.map((reel, index) => (
+        <Reel reel={reel} index={index} />
+    ))};
+</section>

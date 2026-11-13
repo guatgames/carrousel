@@ -1,0 +1,38 @@
+---
+import type { Reel } from "../types/Reel";
+
+interface Props {
+    reel: Reel;
+    index: number;
+}
+
+const { reel, index } = Astro.props;
+const isVideo = reel.media_type === "VIDEO";
+const label = isVideo ? "Video" : "Imagen";
+const number = String(index + 1).padStart(2, "0");
+const alt =
+    reel.caption?.trim().slice(0, 120) ||
+    `Publicación de Instagram ${index + 1}`;
+
+const href = reel.permalink || "https://www.instagram.com/";
+---
+
+<article class="w-62 h-[139] relative flex-shrink-0 rounded-4xl bg-taupe-950 shadow-lg shadow-taupe-950/50 ">
+    <a href={reel.permalink} target="_blank">
+        {isVideo ? (
+            <video
+                class="w-full h-full rounded-2xl object-cover"
+                src={reel.media_url}
+                muted
+                playsinline
+                autoplay
+            />
+        ) : (
+            <img
+                class="w-full h-full rounded-2xl object-cover"
+                src={reel.media_url}
+                alt={alt}
+            />
+        )}
+    </a>
+</article>

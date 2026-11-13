@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.infinite-scroll {
+    overflow: hidden;
+    width: 100%;
+
+    /* blur */
+    mask-image: linear-gradient(to right,
+            transparent,
+            black 10%,
+            black 90%,
+            transparent);
+
+    mask-image: linear-gradient(to left,
+            transparent,
+            black 10%,
+            black 90%,
+            transparent);
+}
+
+.infinite-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-infinito 15s linear infinite;
+}
+
+@keyframes scroll-infinito {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-20%);
+    }
+}

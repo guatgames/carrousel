@@ -1,0 +1,19 @@
+---
+import MainLayout from "../layout/MainLayout.astro";
+import Carrousel from "../components/Carrousel.astro";
+import { fetchMedia } from "../js/api.ts";
+import type { Reel } from "../types/Reel.ts";
+
+let reels: Reel[] = [];
+let error: string | null = null;
+
+try {
+    reels = await fetchMedia();
+} catch (cause) {
+    error = cause instanceof Error ? cause.message : "Ocurrió un error inesperado.";
+}
+---
+
+<MainLayout>
+    <Carrousel items={reels}  />
+</MainLayout>

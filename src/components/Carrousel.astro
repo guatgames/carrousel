@@ -5,14 +5,85 @@ import type { Reel as ReelType } from "../types/Reel";
 interface Props {
     items: ReelType[];
     title?: string;
-    subtitle?: string;
+    heading?: "h1" | "h2";
 }
 
-const { items } = Astro.props;
+const { items, title = "h2" } = Astro.props;
+
+const label = title ?? "Reels de Instagram";
+
+const edgeLayers = [
+    { blur: 1, stop: 0 },
+    { blur: 2, stop: 20 },
+    { blur: 3.2, stop: 42 },
+    { blur: 4.8, stop: 62 },
+    { blur: 7, stop: 80 },
+];
 ---
 
-<section class="flex w-full gap-5 infinite-scroll infinite-track" >
-    {items.map((reel, index) => (
-        <Reel reel={reel} index={index} />
-    ))};
+<section
+    class="relative w-full py-[clamp(3rem,8vh,6rem)] text-taupe-100 [--reel-gap:1rem] [--reel-h:328px] [--reel-w:168px] md:[--reel-gap:2rem] md:[--reel-h:min(428px,53.5vh)] md:[--reel-w:min(219px,27.375vh)]"
+    aria-label={label}
+>
+    <div
+        class:list={[
+            "group/rail relative overflow-hidden py-[clamp(1.5rem,4.5vh,2.75rem)]",
+            title && "mt-[clamp(1.5rem,4vh,2.75rem)]",
+        ]}
+    >
+        <div 
+            id="carousel-viewport"
+            class="flex w-full h-128 overflow-x-auto cursor-grab [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
+            <div class="flex shrink-0 items-center gap-[var(--reel-gap)] pr-[var(--reel-gap)]">
+                {
+                    items.map((reel, index) => (
+                        <Reel reel={reel} index={index} />
+                    ))
+                }
+            </div>
+
+            <div
+                class="flex shrink-0 items-center gap-[var(--reel-gap)] pr-[var(--reel-gap)]"
+                aria-hidden="true"
+            >
+                {
+                    items.map((reel, index) => (
+                        <Reel reel={reel} index={index} decorative />
+                    ))
+                }
+            </div>
+        </div>
+
+
+        {
+            ["left", "right"].map((side) => (
+                <div
+                    class:list={[
+                        "pointer-events-none absolute inset-y-0 z-10 w-[clamp(72px,18vw,420px)] max-md:w-[clamp(56px,16vw,120px)]",
+                        side === "left" ? "left-0" : "right-0",
+                    ]}
+                    aria-hidden="true"
+                >
+                    {edgeLayers.map((layer, index) => (
+                        <div
+                            class:list={[
+                                "reels__edge-layer absolute inset-0",
+                                side === "right" && "reels__edge-layer--right",
+                                index >= 3 && "max-md:hidden",
+                            ]}
+                            style={`--edge-blur:${layer.blur}px;--edge-stop:${layer.stop}%`}
+                        />
+                    ))}
+                </div>
+            ))
+        }
+    </div>
 </section>
+
+<script>
+    import { initDragScroll } from "../js/carrousel.ts";
+    
+    // Exec when the component is mounted
+    initDragScroll('carousel-viewport');
+</script>

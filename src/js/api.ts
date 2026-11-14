@@ -17,7 +17,7 @@ export async function fetchMedia(): Promise<Reel[]> {
 
     const params = new URLSearchParams({
         fields: FIELDS,
-        limit: "50",
+        limit: "20",
     });
 
     const response = await fetch(

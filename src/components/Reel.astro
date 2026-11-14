@@ -4,35 +4,89 @@ import type { Reel } from "../types/Reel";
 interface Props {
     reel: Reel;
     index: number;
+    decorative?: boolean;
 }
 
-const { reel, index } = Astro.props;
-const isVideo = reel.media_type === "VIDEO";
-const label = isVideo ? "Video" : "Imagen";
-const number = String(index + 1).padStart(2, "0");
-const alt =
-    reel.caption?.trim().slice(0, 120) ||
-    `Publicación de Instagram ${index + 1}`;
+const { reel, index, decorative = false } = Astro.props;
 
+const hasVideo = reel.media_type === "VIDEO" && Boolean(reel.media_url);
+const src = reel.media_url || reel.thumbnail_url || "";
+const poster = reel.thumbnail_url || undefined;
+const caption = reel.caption?.replace(/\s+/g, " ").trim();
+const alt = caption?.slice(0, 140) || `Publicación de Instagram ${index + 1}`;
 const href = reel.permalink || "https://www.instagram.com/";
+const label = `${hasVideo ? "Ver reel" : "Ver publicación"} ${index + 1} en Instagram`;
 ---
 
-<article class="w-62 h-[139] relative flex-shrink-0 rounded-4xl bg-taupe-950 shadow-lg shadow-taupe-950/50 ">
-    <a href={reel.permalink} target="_blank">
-        {isVideo ? (
-            <video
-                class="w-full h-full rounded-2xl object-cover"
-                src={reel.media_url}
-                muted
-                playsinline
-                autoplay
-            />
+<article
+    class="relative h-[var(--reel-h)] w-[var(--reel-w)] flex-none"
+    data-reel-card
+>
+    <a
+        class="group/link relative block h-full w-full overflow-hidden rounded-[18px] bg-reel-surface shadow-[0_28px_70px_-34px_#000000e6] inset-ring-1 inset-ring-taupe-100/10 transition-[transform,scale,box-shadow] duration-[450ms] ease-reveal [-webkit-user-drag:none] hover:scale-[1.055] hover:shadow-[0_42px_95px_-32px_#000000f2] hover:inset-ring-taupe-100/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent motion-reduce:transition-none motion-reduce:hover:scale-100"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={label}
+        tabindex={decorative ? -1 : undefined}
+        draggable="true"
+    >
+        {hasVideo ? (
+            <>
+                <video
+                    class="pointer-events-none absolute inset-0 h-full w-full bg-reel-surface object-cover [-webkit-user-drag:none] motion-reduce:hidden"
+                    src={src}
+                    poster={poster}
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    aria-hidden="true"
+                    tabindex="-1"
+                />
+                {poster && (
+                    <img
+                        class="pointer-events-none absolute inset-0 hidden h-full w-full bg-reel-surface object-cover [-webkit-user-drag:none] motion-reduce:block"
+                        src={poster}
+                        alt=""
+                        loading={index < 3 ? "eager" : "lazy"}
+                        decoding="async"
+                        draggable="false"
+                    />
+                )}
+            </>
         ) : (
             <img
-                class="w-full h-full rounded-2xl object-cover"
-                src={reel.media_url}
+                class="pointer-events-none absolute inset-0 h-full w-full bg-reel-surface object-cover [-webkit-user-drag:none]"
+                src={src}
                 alt={alt}
+                loading={index < 3 ? "eager" : "lazy"}
+                decoding="async"
+                draggable="false"
             />
         )}
+
+        <span
+            class="pointer-events-none absolute p-2 inset-x-0 align-bottom flex items-end bottom-0 h-[42%] bg-linear-to-t from-[#0c0907b8] via-[#0c090733] via-45% to-transparent"
+            aria-hidden="true"
+        >
+            <svg
+                class="w-[32px] h-[32px] text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
+                    clip-rule="evenodd"
+                />
+            </svg>
+        </span>
     </a>
 </article>

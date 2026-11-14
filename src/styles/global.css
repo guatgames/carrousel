@@ -1,35 +1,63 @@
 @import "tailwindcss";
 
-.infinite-scroll {
-    overflow: hidden;
-    width: 100%;
-
-    /* blur */
-    mask-image: linear-gradient(to right,
-            transparent,
-            black 10%,
-            black 90%,
-            transparent);
-
-    mask-image: linear-gradient(to left,
-            transparent,
-            black 10%,
-            black 90%,
-            transparent);
+@theme {
+    --font-display: "Anton", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --color-reel-accent: #e0b37c;
+    --color-reel-surface: #1d1813;
+    --animate-reels-title: reels-title-in 1s var(--ease-reveal) both;
+    --animate-reels-marquee: reels-marquee 55s linear infinite;
 }
 
-.infinite-track {
-    display: flex;
-    width: max-content;
-    animation: scroll-infinito 15s linear infinite;
+@keyframes reels-title-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.22em);
+        clip-path: inset(-12% 0 100% 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+        clip-path: inset(-12% 0 -12% 0);
+    }
 }
 
-@keyframes scroll-infinito {
-    0% {
-        transform: translateX(0);
+@keyframes reels-marquee {
+    from {
+        transform: translate3d(0, 0, 0);
     }
 
-    100% {
-        transform: translateX(-20%);
+    to {
+        transform: translate3d(-50%, 0, 0);
     }
+}
+
+
+.reels__edge-layer {
+    -webkit-backdrop-filter: blur(var(--edge-blur));
+    backdrop-filter: blur(var(--edge-blur));
+    -webkit-mask-image: linear-gradient(
+        to left,
+        transparent var(--edge-stop),
+        #000 calc(var(--edge-stop) - 24%)
+    );
+    mask-image: linear-gradient(
+        to left,
+        transparent var(--edge-stop),
+        #000 calc(var(--edge-stop) - 24%)
+    );
+}
+
+.reels__edge-layer--right {
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent var(--edge-stop),
+        #000 calc(var(--edge-stop) - 24%)
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent var(--edge-stop),
+        #000 calc(var(--edge-stop) - 24%)
+    );
 }

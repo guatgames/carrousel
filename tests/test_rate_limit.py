@@ -4,7 +4,7 @@ import time
 import requests
 from dotenv import load_dotenv
 
-# Cargar variables de entorno desde el archivo .env
+# load env 
 load_dotenv()
 
 TOKEN_META = os.getenv("TOKEN_META")
@@ -15,7 +15,7 @@ GRAPH_API_VERSION = os.getenv("GRAPH_API_VERSION", "v27.0").strip("/")
 if not TOKEN_META or not ID_BUSSINESS:
     raise ValueError("Faltan TOKEN_META o ID_BUSSINESS en el archivo .env")
 
-# Construir endpoint y cabeceras
+# Endpooint and headers
 endpoint = f"{GRAPH_API_URL}/{GRAPH_API_VERSION}/{ID_BUSSINESS}/media"
 headers = {
     "Authorization": f"Bearer {TOKEN_META}"

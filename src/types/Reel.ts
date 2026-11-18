@@ -15,3 +15,25 @@ export interface MediaResponse {
         previous?: string;
     };
 }
+
+export interface TikTokVideo {
+    id: string;
+    title?: string;
+    video_description?: string;
+    cover_image_url?: string;
+    share_url?: string;
+    embed_link?: string;
+}
+
+export interface TikTokVideoResponse {
+    data?: {
+        videos?: TikTokVideo[];
+        cursor?: number;
+        has_more?: boolean;
+    };
+    error?: {
+        code?: string;
+        message?: string;
+        log_id?: string;
+    };
+}

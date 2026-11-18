@@ -5,17 +5,20 @@ interface Props {
     reel: Reel;
     index: number;
     decorative?: boolean;
+    platform?: "instagram" | "tiktok";
 }
 
-const { reel, index, decorative = false } = Astro.props;
+const { reel, index, decorative = false, platform = "instagram" } = Astro.props;
 
 const hasVideo = reel.media_type === "VIDEO" && Boolean(reel.media_url);
 const src = reel.media_url || reel.thumbnail_url || "";
 const poster = reel.thumbnail_url || undefined;
 const caption = reel.caption?.replace(/\s+/g, " ").trim();
-const alt = caption?.slice(0, 140) || `Publicación de Instagram ${index + 1}`;
-const href = reel.permalink || "https://www.instagram.com/";
-const label = `${hasVideo ? "Ver reel" : "Ver publicación"} ${index + 1} en Instagram`;
+const platformName = platform === "tiktok" ? "TikTok" : "Instagram";
+const alt = caption?.slice(0, 140) || `Publicación de ${platformName} ${index + 1}`;
+const href =
+    reel.permalink || (platform === "tiktok" ? "https://www.tiktok.com/" : "https://www.instagram.com/");
+const label = `${hasVideo ? "Ver video" : "Ver publicación"} ${index + 1} en ${platformName}`;
 ---
 
 <article
@@ -71,22 +74,42 @@ const label = `${hasVideo ? "Ver reel" : "Ver publicación"} ${index + 1} en Ins
             class="pointer-events-none absolute p-2 inset-x-0 align-bottom flex items-end bottom-0 h-[42%] bg-linear-to-t from-[#0c0907b8] via-[#0c090733] via-45% to-transparent"
             aria-hidden="true"
         >
-            <svg
-                class="w-[32px] h-[32px] text-gray-800 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
-                    clip-rule="evenodd"
-                />
-            </svg>
+            {platform === "tiktok" ? (
+                <svg
+                    class="w-[32px] h-[32px] text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 16.5c0 1.3807-1.1193 2.5-2.5 2.5C8.11929 19 7 17.8807 7 16.5S8.11929 14 9.5 14c1.3807 0 2.5 1.1193 2.5 2.5Zm0 0V5c2.5 0 6 2.5 4.5 7"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    class="w-[32px] h-[32px] text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"
+                        clip-rule="evenodd"
+                    />
+                </svg>
+            )}
         </span>
     </a>
 </article>

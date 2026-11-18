@@ -5,12 +5,12 @@ import type { Reel as ReelType } from "../types/Reel";
 interface Props {
     items: ReelType[];
     title?: string;
-    heading?: "h1" | "h2";
+    label?: string;
+    id?: string;
+    platform?: "instagram" | "tiktok";
 }
 
-const { items, title = "h2" } = Astro.props;
-
-const label = title ?? "Reels de Instagram";
+const { items, title, label = title ?? "Carrusel", id = "carousel-viewport", platform = "instagram" } = Astro.props;
 
 const edgeLayers = [
     { blur: 1, stop: 0 },
@@ -32,13 +32,14 @@ const edgeLayers = [
         ]}
     >
         <div 
-            id="carousel-viewport"
+            id={id}
+            data-carousel-viewport
             class="flex w-full h-128 overflow-x-auto cursor-grab [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
             <div class="flex shrink-0 items-center gap-[var(--reel-gap)] pr-[var(--reel-gap)]">
                 {
                     items.map((reel, index) => (
-                        <Reel reel={reel} index={index} />
+                        <Reel reel={reel} index={index} platform={platform} />
                     ))
                 }
             </div>
@@ -49,7 +50,7 @@ const edgeLayers = [
             >
                 {
                     items.map((reel, index) => (
-                        <Reel reel={reel} index={index} decorative />
+                        <Reel reel={reel} index={index} decorative platform={platform} />
                     ))
                 }
             </div>
@@ -83,7 +84,8 @@ const edgeLayers = [
 
 <script>
     import { initDragScroll } from "../js/carrousel.ts";
-    
-    // Exec when the component is mounted
-    initDragScroll('carousel-viewport');
+
+    document.querySelectorAll<HTMLElement>("[data-carousel-viewport]").forEach((el) => {
+        if (el.id) initDragScroll(el.id);
+    });
 </script>

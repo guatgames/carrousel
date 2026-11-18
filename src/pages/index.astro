@@ -1,23 +1,33 @@
 ---
 import MainLayout from "../layout/MainLayout.astro";
 import Carrousel from "../components/Carrousel.astro";
-import { fetchMedia } from "../js/api.ts";
+import { fetchMedia, fetchTikTokVideos } from "../js/api.ts";
 import type { Reel } from "../types/Reel.ts";
 
 let reels: Reel[] = [];
-let error: string | null = null;
+let tiktokVideos: Reel[] = [];
 
 try {
     reels = await fetchMedia();
 } catch (cause) {
-    error =
-        cause instanceof Error ? cause.message : "Ocurrió un error inesperado.";
     console.error("[instagram] No se pudo cargar el feed:", cause);
 }
 
-const hasReels = reels.length > 0;
+try {
+    tiktokVideos = await fetchTikTokVideos();
+} catch (cause) {
+    const message = cause instanceof Error ? cause.message : String(cause);
+    console.error(`[tiktok] No se pudo cargar el feed: ${message}`, cause);
+}
 ---
 
 <MainLayout>
-    <Carrousel items={reels} heading="h1" />
+    <div class="flex w-full flex-col">
+        {reels.length > 0 && (
+            <Carrousel id="instagram-carousel" items={reels} label="Reels de Instagram" platform="instagram" />
+        )}
+        {tiktokVideos.length > 0 && (
+            <Carrousel id="tiktok-carousel" items={tiktokVideos} label="Videos de TikTok" platform="tiktok" />
+        )}
+    </div>
 </MainLayout>

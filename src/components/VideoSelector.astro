@@ -1,0 +1,24 @@
+---
+import type { ShowcaseItem } from "../types/VideoShowcase";
+import VideoThumbnail from "./VideoThumbnail.astro";
+
+interface Props {
+    items: ShowcaseItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div data-showcase-selector-zone>
+    <div
+        data-showcase-selector
+        class="rounded-2xl border border-taupe-100/10 bg-taupe-950/72 p-3 shadow-[0_30px_80px_-40px_#000000e6] backdrop-blur-xl transition-[opacity,transform] duration-500 ease-reveal motion-reduce:transition-none md:rounded-[24px] md:p-4 data-[hidden=true]:pointer-events-none data-[hidden=true]:translate-y-3 data-[hidden=true]:opacity-0"
+    >
+        <div
+            data-showcase-strip
+            class="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-4 md:overflow-visible"
+        >
+            {items.map((item, index) => <VideoThumbnail item={item} index={index} />)}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+---
+import type { ShowcaseItem } from "../types/VideoShowcase";
+
+interface Props {
+    item: ShowcaseItem;
+    index: number;
+}
+
+const { item, index } = Astro.props;
+---
+
+<button
+    type="button"
+    data-showcase-thumb
+    aria-label={`Ver ${item.title}`}
+    aria-pressed={index === 0 ? "true" : "false"}
+    data-active={index === 0 ? "true" : "false"}
+    class="relative w-[calc(50%-0.25rem)] h-32 cursor-pointer shrink-0 snap-center overflow-hidden rounded-xl bg-reel-surface text-left transition-[box-shadow,opacity] duration-300 ease-reveal focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent md:w-[clamp(120px,15vw,190px)] data-[active=false]:opacity-60 data-[active=true]:opacity-100 data-[active=true]:ring-2 data-[active=true]:ring-reel-accent/80 hover:opacity-100 motion-reduce:transition-none"
+>
+    <img
+        src={item.thumbnailSrc}
+        alt=""
+        class="aspect-[16/10] w-full  object-cover md:aspect-[4/5]"
+        loading={index < 2 ? "eager" : "lazy"}
+        decoding="async"
+    />
+    <span
+        class="absolute top-2 right-2 grid size-6 place-items-center rounded-full border border-taupe-100/40 bg-taupe-950/60 text-taupe-100 backdrop-blur-sm"
+        aria-hidden="true"
+    >
+        <svg
+            class="size-3 translate-x-px"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M8 5v14l11-7z"></path>
+        </svg>
+    </span>
+</button>

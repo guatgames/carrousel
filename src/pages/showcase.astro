@@ -1,0 +1,9 @@
+---
+import MainLayout from "../layout/MainLayout.astro";
+import VideoShowcase from "../components/VideoShowcase.astro";
+import { showcaseItems } from "../js/showcaseData.ts";
+---
+
+<MainLayout title="Videos" description="Galería cinematográfica de videos.">
+    <VideoShowcase items={showcaseItems} label="Galería cinematográfica de videos" />
+</MainLayout>

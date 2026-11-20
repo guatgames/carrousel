@@ -1,0 +1,53 @@
+---
+interface Props {
+    videoSrc?: string;
+    posterSrc?: string;
+    title?: string;
+    description?: string;
+}
+
+const {
+    videoSrc = "/videos/cine.mp4",
+    posterSrc = "/videos/cine.jpg",
+    title = "Soluciones en movimiento",
+    description = "Nosotros desarrollamos soluciones, brindamos servicios y acompañamos cada proyecto de principio a fin. Combinamos estrategia, diseño y tecnología para crear experiencias que funcionan y se sienten bien.",
+} = Astro.props;
+---
+
+<section
+    aria-label="Sobre nosotros"
+    class="w-full bg-taupe-950 py-16 text-taupe-100 md:py-24"
+>
+    <div class="mx-auto grid w-full max-w-[1600px] grid-cols-1 items-center gap-12 px-5 md:grid-cols-5 md:gap-14 md:px-10">
+        <div class="md:col-span-3">
+            <div class="rounded-[28px] border border-taupe-100/15 bg-taupe-900 p-2 shadow-[0_45px_100px_-50px_#000000e6] md:rounded-[36px] md:p-3">
+                <div class="relative aspect-video overflow-hidden rounded-[20px] bg-black md:rounded-[26px]">
+                    <iframe
+                        class="size-full"
+                        width="560"
+                        height="315"
+                        src="https://www.youtube.com/embed/WHqZAXHZN_w?si=XYq9Hn7_MPNwbCSE"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                <div class="mx-auto my-2 h-1 w-10 rounded-full bg-taupe-100/20 md:my-3"></div>
+            </div>
+        </div>
+
+        <div class="md:col-span-2">
+            <p class="text-[10px] font-medium uppercase tracking-[0.28em] text-reel-accent">
+                Sobre nosotros
+            </p>
+            <h2 class="mt-4 font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.95] tracking-[0.06em] uppercase">
+                {title}
+            </h2>
+            <p class="mt-6 max-w-xl text-sm leading-relaxed text-taupe-100/60 md:text-base">
+                {description}
+            </p>
+        </div>
+    </div>
+</section>

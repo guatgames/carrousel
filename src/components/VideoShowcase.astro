@@ -1,0 +1,35 @@
+---
+import type { ShowcaseItem } from "../types/VideoShowcase";
+import VideoHero from "./VideoHero.astro";
+import VideoSelector from "./VideoSelector.astro";
+import VideoControls from "./VideoControls.astro";
+
+interface Props {
+    items: ShowcaseItem[];
+    label?: string;
+}
+
+const { items, label = "Galería cinematográfica" } = Astro.props;
+---
+
+<section
+    data-video-showcase
+    data-items={JSON.stringify(items)}
+    aria-label={label}
+    class="relative isolate flex min-h-dvh w-full flex-col overflow-hidden pt-14 text-taupe-100"
+>
+    <VideoHero item={items[0]} />
+
+    <div class="absolute inset-x-0 bottom-0 z-20 px-5 pb-6 md:px-10 md:pb-9">
+        <div class="mx-auto w-full max-w-[1600px]">
+            <VideoSelector items={items} />
+            <VideoControls total={items.length} />
+        </div>
+    </div>
+</section>
+
+<script>
+    import { initVideoShowcase } from "../js/videoShowcase.ts";
+
+    document.querySelectorAll<HTMLElement>("[data-video-showcase]").forEach(initVideoShowcase);
+</script>

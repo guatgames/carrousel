@@ -1,0 +1,58 @@
+---
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+
+const links = [
+    { href: "/", label: "Inicio" },
+    { href: "/galeria", label: "Galería" },
+    { href: "/showcase", label: "Videos" },
+    { href: "/nosotros", label: "Nosotros" },
+];
+
+const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header
+    class="fixed inset-x-0 top-0 z-50 border-b border-taupe-100/8 bg-taupe-950/72 backdrop-blur-md supports-[backdrop-filter]:bg-taupe-950/60"
+>
+    <nav
+        class="mx-auto flex h-14 w-full max-w-[1600px] items-center justify-between px-5 md:px-10"
+        aria-label="Navegación principal"
+    >
+        <a
+            href="/"
+            class="font-display text-[15px] tracking-[0.2em] text-taupe-100/90 transition-colors duration-200 hover:text-taupe-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent"
+        >
+            CARRUSEL
+        </a>
+
+        <div class="flex items-center gap-3 md:gap-6">
+            {
+                links.map((link) => {
+                    const active = isActive(link.href);
+                    return (
+                        <a
+                            href={link.href}
+                            aria-current={active ? "page" : undefined}
+                            class:list={[
+                                "group inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent",
+                                active ? "text-taupe-100" : "text-taupe-100/45 hover:text-taupe-100/80",
+                            ]}
+                        >
+                            <span
+                                aria-hidden="true"
+                                class:list={[
+                                    "size-1 rounded-full transition-all duration-300",
+                                    active
+                                        ? "scale-100 bg-reel-accent"
+                                        : "scale-0 bg-taupe-100/50 group-hover:scale-100",
+                                ]}
+                            />
+                            {link.label}
+                        </a>
+                    );
+                })
+            }
+        </div>
+    </nav>
+</header>

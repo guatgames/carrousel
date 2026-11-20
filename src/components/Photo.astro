@@ -1,0 +1,56 @@
+---
+import type { Photo } from "../types/Photo";
+import { getStackStyle } from "../js/photoStack.ts";
+
+interface Props {
+    photo: Photo;
+    index: number;
+    position?: number;
+}
+
+const { photo, index, position = index } = Astro.props;
+
+const pad = (value: number) => String(value).padStart(2, "0");
+const caption = photo.caption || `Fotografía ${pad(index + 1)}`;
+---
+
+<article
+    data-photo-card
+    data-index={index}
+    data-front={position === 0 ? "true" : "false"}
+    style={getStackStyle(position)}
+    class="absolute inset-x-0 top-0 mx-auto aspect-[4/5] h-[var(--card-h)] w-[var(--card-w)] select-none touch-none origin-top opacity-[var(--stack-opacity)] transition-[translate,rotate,scale,opacity] duration-[480ms] ease-reveal data-[dragging=true]:transition-none data-[front=false]:pointer-events-none [--drag-rot:0deg] [--drag-y:0px] [--stack-opacity:1] [--stack-rot:0deg] [--stack-scale:1] [--stack-y:0px] translate-y-[calc(var(--stack-y)_+_var(--drag-y))] rotate-[calc(var(--stack-rot)_+_var(--drag-rot))] scale-[var(--stack-scale)] motion-reduce:transition-none md:static md:mx-0 md:flex-none md:scale-100 md:snap-start md:translate-none md:rotate-none md:opacity-100 md:touch-auto md:transition-none md:data-[front=false]:pointer-events-auto"
+>
+    <a
+        class="relative block h-full w-full overflow-hidden rounded-[18px] bg-reel-surface shadow-[0_28px_70px_-34px_#000000e6] inset-ring-1 inset-ring-taupe-100/10 transition-[box-shadow] duration-[450ms] ease-reveal hover:shadow-[0_42px_95px_-32px_#000000f2] hover:inset-ring-taupe-100/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent motion-reduce:transition-none [-webkit-user-drag:none]"
+        href={photo.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Ver imagen ${index + 1}`}
+        draggable="false"
+    >
+        <img
+            class="pointer-events-none absolute inset-0 h-full w-full bg-reel-surface object-cover [-webkit-user-drag:none]"
+            src={photo.src}
+            alt={caption}
+            loading={index < 3 ? "eager" : "lazy"}
+            decoding="async"
+            draggable="false"
+        />
+        <span
+            class="pointer-events-none absolute inset-x-0 bottom-0 flex h-[36%] items-end bg-linear-to-t from-[#0c0907b8] via-[#0c090733] via-45% to-transparent p-4 md:hidden"
+            aria-hidden="true"
+        >
+            <span class="line-clamp-2 text-[11px] leading-snug text-taupe-100/80">{caption}</span>
+        </span>
+    </a>
+
+    <div class="hidden md:mt-4 md:flex md:items-baseline md:justify-between md:gap-3">
+        <p class="max-w-[78%] truncate text-[10px] uppercase tracking-[0.14em] text-taupe-100/60">
+            {caption}
+        </p>
+        <span class="font-display text-[11px] tracking-[0.08em] text-taupe-100/35">
+            {pad(index + 1)}
+        </span>
+    </div>
+</article>

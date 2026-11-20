@@ -1,20 +1,33 @@
 ---
-import '../styles/global.css'
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "Reels",
+    description = "Selección de imágenes y videos del feed de Instagram.",
+} = Astro.props;
 ---
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#14110e">
-	<meta name="description" content="Selección de imágenes y videos del feed de Instagram.">
+	<meta name="description" content={description}>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-	<title>Reels</title>
+	<title>{title}</title>
 </head>
 <body class="bg-taupe-950 text-taupe-100 antialiased selection:bg-taupe-100 selection:text-taupe-950">
+	<Navbar />
 	<main class="relative flex min-h-dvh w-full items-center justify-center overflow-x-clip">
         <slot/>
     </main>

@@ -1,0 +1,56 @@
+---
+import { readdirSync } from "node:fs";
+import MainLayout from "../layout/MainLayout.astro";
+import PhotoGallery from "../components/PhotoGallery.astro";
+import type { Photo } from "../types/Photo.ts";
+
+const GALLERY_DIR = "public/gallery";
+const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"]);
+
+let files: string[] = [];
+
+try {
+    files = readdirSync(GALLERY_DIR)
+        .filter((name) => IMAGE_EXTENSIONS.has(name.slice(name.lastIndexOf(".")).toLowerCase()))
+        .sort((a, b) => a.localeCompare(b, "es", { numeric: true }));
+} catch (cause) {
+    console.warn(`[galería] No se pudo leer ${GALLERY_DIR}:`, cause);
+}
+
+const titleFrom = (name: string) => {
+    const base = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+    return base.charAt(0).toUpperCase() + base.slice(1);
+};
+
+const photos: Photo[] = files.map((name) => {
+    const src = `/gallery/${encodeURIComponent(name)}`;
+    return {
+        src,
+        href: src,
+        caption: titleFrom(name),
+    };
+});
+---
+
+<MainLayout
+    title="Galería"
+    description="Selección editorial de fotografías del proyecto."
+>
+    {
+        photos.length > 0 ? (
+            <PhotoGallery photos={photos} label="Galería editorial de fotografías" />
+        ) : (
+            <section class="flex w-full flex-col items-center gap-4 px-6 pt-24 text-center">
+                <h1 class="font-display text-[clamp(2.5rem,8vw,5rem)] tracking-[0.16em] text-taupe-100">
+                    GALLERY
+                </h1>
+                <p class="max-w-sm text-xs uppercase tracking-[0.2em] text-taupe-100/45">
+                    No hay imágenes disponibles en este momento.
+                </p>
+                <p class="text-[10px] tracking-[0.14em] text-taupe-100/25">
+                    Agrégalas en <code>public/gallery/</code>
+                </p>
+            </section>
+        )
+    }
+</MainLayout>

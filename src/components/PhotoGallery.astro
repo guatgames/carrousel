@@ -1,0 +1,83 @@
+---
+import type { Photo as PhotoData } from "../types/Photo";
+import Photo from "./Photo.astro";
+
+interface Props {
+    photos: PhotoData[];
+    label?: string;
+}
+
+const { photos, label = "Galería de imágenes" } = Astro.props;
+const total = String(photos.length).padStart(2, "0");
+---
+
+<section
+    data-photo-gallery
+    aria-label={label}
+    class="relative w-full px-5 pt-24 pb-10 [--card-w:min(78vw,320px)] [--card-h:calc(var(--card-w)*1.25)] md:px-10 md:pt-28 md:pb-8 md:[--card-w:min(300px,38vh)]"
+>
+    <div class="mx-auto w-full max-w-[1600px]">
+        <p class="mb-5 font-display text-sm tracking-[0.1em] text-taupe-100/75 md:hidden">
+            <span data-gallery-current="mobile" aria-live="polite">01</span>
+            <span class="text-taupe-100/30"> / {total}</span>
+        </p>
+
+        <div
+            data-gallery-track
+            class="relative h-[calc(var(--card-h)+56px)] w-full md:flex md:h-auto md:items-start md:gap-[clamp(1rem,2.2vw,2rem)] md:overflow-x-auto md:scroll-smooth md:snap-x md:snap-mandatory md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden"
+        >
+            {photos.map((photo, index) => (
+                <Photo photo={photo} index={index} />
+            ))}
+        </div>
+
+        <div class="mt-6 hidden items-end justify-between gap-8 border-t border-taupe-100/8 pt-6 md:flex">
+            <div class="flex items-baseline gap-3 font-display leading-none text-taupe-100">
+                <span
+                    data-gallery-current="desktop"
+                    aria-live="polite"
+                    class="text-[clamp(3.5rem,7vw,6.5rem)] tracking-[0.02em]"
+                >
+                    01
+                </span>
+                <span class="text-[clamp(1rem,1.6vw,1.5rem)] tracking-[0.12em] text-taupe-100/35">
+                    / {total}
+                </span>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <div class="flex items-center gap-2">
+                    <button
+                        type="button"
+                        data-gallery-nav="-1"
+                        aria-label="Foto anterior"
+                        class="grid size-10 cursor-pointer place-items-center rounded-full bg-taupe-900/70 text-taupe-100/70 inset-ring-1 inset-ring-taupe-100/12 transition hover:bg-taupe-900 hover:text-taupe-100 hover:inset-ring-taupe-100/25"
+                    >
+                        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m15 19-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button
+                        type="button"
+                        data-gallery-nav="1"
+                        aria-label="Foto siguiente"
+                        class="grid size-10 cursor-pointer place-items-center rounded-full bg-taupe-900/70 text-taupe-100/70 inset-ring-1 inset-ring-taupe-100/12 transition hover:bg-taupe-900 hover:text-taupe-100 hover:inset-ring-taupe-100/25"
+                    >
+                        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <h2 class="font-display text-[clamp(2rem,4vw,4rem)] leading-none tracking-[0.14em] text-taupe-100/90">
+                    GALLERY
+                </h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import { initPhotoGallery } from "../js/gallery.ts";
+    initPhotoGallery();
+</script>

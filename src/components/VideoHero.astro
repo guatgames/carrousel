@@ -8,7 +8,7 @@ interface Props {
 const { item } = Astro.props;
 ---
 
-<div class="absolute inset-0 -z-10 bg-taupe-950">
+<div class="absolute inset-x-0 top-14 bottom-0 -z-10 bg-taupe-950">
     <video
         data-showcase-video
         class="absolute inset-0 size-full bg-taupe-950 object-cover"
@@ -21,8 +21,7 @@ const { item } = Astro.props;
         aria-hidden="true"
         tabindex="-1"
     ></video>
-    <div class="absolute inset-0 bg-linear-to-b from-taupe-950/85 via-taupe-950/25 via-45% to-taupe-950/95"></div>
-    <div class="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_22%,#14110ecc_100%)]"></div>
+    
 </div>
 
 <div class="relative flex flex-1 flex-col items-center justify-center px-5 pt-12 pb-[clamp(19rem,46vh,26rem)] text-center md:pb-[clamp(17rem,38vh,23rem)]">

@@ -16,7 +16,7 @@ const { items } = Astro.props;
     >
         <div
             data-showcase-strip
-            class="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-4 md:overflow-visible"
+            class="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-4 md:overflow-visible pl-6"
         >
             {items.map((item, index) => <VideoThumbnail item={item} index={index} />)}
         </div>

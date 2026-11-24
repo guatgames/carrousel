@@ -7,34 +7,78 @@ interface Props {
 }
 
 const { item, index } = Astro.props;
+
+const clipId = `video-thumb-clip-${item.id}`;
+
+// Trapezoid path data for the clip-path and stroke outline
+const trapezoidPath =
+    "M22 0H96Q100 0 99.29 3.94L82.71 96.06Q82 100 78 100H4Q0 100 0.71 96.06L17.29 3.94Q18 0 22 0Z";
+    
+// Normalized trapezoid path data for the clip-path definition
+const normalizedTrapezoidPath =
+    "M.22 0H.96Q1 0 .9929 .0394L.8271 .9606Q.82 1 .78 1H.04Q0 1 .0071 .9606L.1729 .0394Q.18 0 .22 0Z";
 ---
 
-<button
-    type="button"
-    data-showcase-thumb
-    aria-label={`Ver ${item.title}`}
-    aria-pressed={index === 0 ? "true" : "false"}
-    data-active={index === 0 ? "true" : "false"}
-    class="relative w-[calc(50%-0.25rem)] h-32 cursor-pointer shrink-0 snap-center overflow-hidden rounded-xl bg-reel-surface text-left transition-[box-shadow,opacity] duration-300 ease-reveal focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent md:w-[clamp(120px,15vw,190px)] data-[active=false]:opacity-60 data-[active=true]:opacity-100 data-[active=true]:ring-2 data-[active=true]:ring-reel-accent/80 hover:opacity-100 motion-reduce:transition-none"
->
-    <img
-        src={item.thumbnailSrc}
-        alt=""
-        class="aspect-[16/10] w-full  object-cover md:aspect-[4/5]"
-        loading={index < 2 ? "eager" : "lazy"}
-        decoding="async"
-    />
-    <span
-        class="absolute top-2 right-2 grid size-6 place-items-center rounded-full border border-taupe-100/40 bg-taupe-950/60 text-taupe-100 backdrop-blur-sm"
+<div class="relative h-32 w-[calc(50%-0.25rem)] shrink-0 snap-center md:w-[clamp(120px,15vw,190px)]">
+    <svg width="0" height="0" class="absolute" aria-hidden="true">
+        <defs>
+            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
+                <path d={normalizedTrapezoidPath}></path>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <button
+        type="button"
+        data-showcase-thumb
+        aria-pressed={index === 0 ? "true" : "false"}
+        data-active={index === 0 ? "true" : "false"}
+        style={`clip-path: url(#${clipId})`}
+        class="peer absolute inset-0 size-full cursor-pointer bg-reel-surface text-left transition-opacity duration-300 ease-reveal focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent data-[active=false]:opacity-60 data-[active=true]:opacity-100 hover:opacity-100 motion-reduce:transition-none"
+    >
+        <img
+            src={item.thumbnailSrc}
+            alt=""
+            class="aspect-[16/10] w-full object-cover md:aspect-[4/5]"
+            loading={index < 2 ? "eager" : "lazy"}
+            decoding="async"
+        />
+        <span
+            class="absolute top-2 right-2 grid size-6 place-items-center rounded-full border border-taupe-100/40 bg-taupe-950/60 text-taupe-100 backdrop-blur-sm"
+            aria-hidden="true"
+        >
+            <svg
+                class="w-[12px] h-[12px] text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 18V6l8 6-8 6Z"
+                />
+            </svg>
+        </span>
+    </button>
+
+    <svg
+        class="pointer-events-none absolute inset-0 size-full overflow-visible opacity-0 transition-opacity duration-300 ease-reveal peer-data-[active=true]:opacity-100 motion-reduce:transition-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
         aria-hidden="true"
     >
-        <svg
-            class="size-3 translate-x-px"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-        >
-            <path d="M8 5v14l11-7z"></path>
-        </svg>
-    </span>
-</button>
+        <path
+            d={trapezoidPath}
+            fill="none"
+            class="stroke-reel-accent"
+            stroke-width="4"
+            vector-effect="non-scaling-stroke"
+        ></path>
+    </svg>
+</div>

@@ -26,6 +26,14 @@ export function initVideoShowcase(scope: HTMLElement): void {
     const selector = scope.querySelector<HTMLElement>("[data-showcase-selector]");
     const selectorZone = scope.querySelector<HTMLElement>("[data-showcase-selector-zone]");
     const thumbs = Array.from(scope.querySelectorAll<HTMLButtonElement>("[data-showcase-thumb]"));
+    const volumeControl = scope.querySelector<HTMLElement>("[data-showcase-volume-control]");
+    const volumeToggle = scope.querySelector<HTMLButtonElement>("[data-showcase-volume-toggle]");
+    const volumePanel = scope.querySelector<HTMLElement>("[data-showcase-volume-panel]");
+    const volumeMute = scope.querySelector<HTMLButtonElement>("[data-showcase-volume-mute]");
+    const volumeSlider = scope.querySelector<HTMLInputElement>("[data-showcase-volume]");
+    const volumeValue = scope.querySelector<HTMLElement>("[data-showcase-volume-value]");
+    const volumeOnIcons = Array.from(scope.querySelectorAll<SVGElement>("[data-showcase-volume-on]"));
+    const volumeOffIcons = Array.from(scope.querySelectorAll<SVGElement>("[data-showcase-volume-off]"));
 
     if (!video || !title || !counter || !progress || !playButton) return;
 
@@ -34,10 +42,35 @@ export function initVideoShowcase(scope: HTMLElement): void {
     let lastFrame = performance.now();
     let running = true;
 
+    let volume = Number(volumeSlider?.value ?? 100) / 100;
+    let muted = video.muted;
+
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
     let hideSelectorTimer: number | undefined;
 
     const pad = (value: number) => String(value).padStart(2, "0");
+
+    // Keep the video and every volume control in sync
+    const updateVolumeUI = () => {
+        const audible = !muted && volume > 0;
+        video.volume = volume;
+        video.muted = !audible;
+
+        const percent = Math.round(volume * 100);
+        volumeOnIcons.forEach((icon) => icon.classList.toggle("hidden", !audible));
+        volumeOffIcons.forEach((icon) => icon.classList.toggle("hidden", audible));
+        volumeMute?.setAttribute("aria-label", audible ? "Silenciar video" : "Activar sonido");
+        volumeToggle?.setAttribute(
+            "aria-label",
+            audible ? `Controlar volumen (${percent} %)` : `Controlar volumen (silenciado)`,
+        );
+        if (volumeSlider) {
+            volumeSlider.value = String(percent);
+            volumeSlider.style.setProperty("--volume-level", `${percent}%`);
+            volumeSlider.setAttribute("aria-valuetext", `${percent} %`);
+        }
+        if (volumeValue) volumeValue.textContent = String(percent);
+    };
 
     // Show the video selector
     const showSelector = () => {
@@ -59,7 +92,9 @@ export function initVideoShowcase(scope: HTMLElement): void {
         const attempt = video.play();
         if (attempt) {
             attempt.catch(() => {
-                video.muted = true;
+                // Autoplay with sound was blocked: reflect the muted state in the UI
+                muted = true;
+                updateVolumeUI();
                 video.play().catch(() => {});
             });
         }
@@ -69,10 +104,10 @@ export function initVideoShowcase(scope: HTMLElement): void {
     const render = (scrollThumb: boolean) => {
         const item = items[index];
 
-        title.textContent = item.title;
         counter.textContent = pad(index + 1);
         video.poster = item.thumbnailSrc;
         video.src = item.videoSrc;
+        updateVolumeUI();
 
         thumbs.forEach((thumb, i) => {
             const active = i === index;
@@ -114,7 +149,7 @@ export function initVideoShowcase(scope: HTMLElement): void {
         running = !running;
 
         if (running) {
-            video.muted = false;
+            updateVolumeUI();
             play();
         } else {
             video.pause();
@@ -146,6 +181,38 @@ export function initVideoShowcase(scope: HTMLElement): void {
     canHover.addEventListener("change", () => {
         if (canHover.matches) scheduleSelectorHide();
         else showSelector();
+    });
+
+    const setVolumePanel = (open: boolean) => {
+        volumePanel?.setAttribute("data-open", String(open));
+        volumeToggle?.setAttribute("aria-expanded", String(open));
+    };
+
+    volumeToggle?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setVolumePanel(volumePanel?.dataset.open !== "true");
+    });
+
+    volumeMute?.addEventListener("click", () => {
+        muted = !muted;
+        if (!muted && volume === 0) volume = 0.5;
+        updateVolumeUI();
+    });
+
+    volumeSlider?.addEventListener("input", () => {
+        volume = Number(volumeSlider.value) / 100;
+        muted = volume === 0;
+        updateVolumeUI();
+    });
+
+    document.addEventListener("click", (event) => {
+        if (volumePanel?.dataset.open === "true" && !volumeControl?.contains(event.target as Node)) {
+            setVolumePanel(false);
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setVolumePanel(false);
     });
 
     render(false);

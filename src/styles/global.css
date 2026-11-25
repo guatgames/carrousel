@@ -34,6 +34,22 @@
 }
 
 
+.showcase-thumb {
+    clip-path: var(--thumb-clip, none);
+}
+
+@media (max-width: 767px) {
+    .showcase-thumb {
+        clip-path: none;
+        border-radius: 0.9rem;
+        overflow: hidden;
+    }
+
+    .showcase-thumb-outline {
+        display: none;
+    }
+}
+
 .volume-range {
     appearance: none;
     -webkit-appearance: none;

@@ -16,14 +16,19 @@ const { items, label = "Galería cinematográfica" } = Astro.props;
     data-video-showcase
     data-items={JSON.stringify(items)}
     aria-label={label}
-    class="relative isolate flex h-dvh w-full flex-col overflow-hidden pt-14 text-taupe-100"
+    class="relative isolate grid h-dvh w-full grid-cols-[minmax(0,1fr)] grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden pt-14 text-taupe-100 md:block"
 >
     <VideoHero item={items[0]} />
 
-    <div class="absolute inset-x-0 bottom-0 z-20">
-        <div class="mx-auto w-full max-w-[1600px]">
-            <VideoSelector items={items} />
+    <div class="relative z-20 border-b border-taupe-100/8 bg-taupe-950/95 md:absolute md:inset-x-0 md:bottom-0 md:z-20 md:border-0 md:bg-transparent">
+        <div class="mx-auto w-full max-w-full">
             <VideoControls total={items.length} />
+        </div>
+    </div>
+
+    <div class="relative z-10 min-h-0 md:absolute md:inset-x-0 md:bottom-[8.75rem] md:z-20">
+        <div class="mx-auto h-full w-full max-w-full">
+            <VideoSelector items={items} />
         </div>
     </div>
 </section>

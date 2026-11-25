@@ -13,13 +13,13 @@ const clipId = `video-thumb-clip-${item.id}`;
 // Trapezoid path data for the clip-path and stroke outline
 const trapezoidPath =
     "M22 0H96Q100 0 99.29 3.94L82.71 96.06Q82 100 78 100H4Q0 100 0.71 96.06L17.29 3.94Q18 0 22 0Z";
-    
+
 // Normalized trapezoid path data for the clip-path definition
 const normalizedTrapezoidPath =
     "M.22 0H.96Q1 0 .9929 .0394L.8271 .9606Q.82 1 .78 1H.04Q0 1 .0071 .9606L.1729 .0394Q.18 0 .22 0Z";
 ---
 
-<div class="relative h-32 w-[calc(50%-0.25rem)] shrink-0 snap-center md:w-[clamp(120px,15vw,190px)]">
+<div class="relative aspect-[9/16] h-[clamp(12rem,32dvh,18rem)] shrink-0 snap-center md:h-32 md:aspect-auto md:w-[clamp(120px,15vw,190px)]">
     <svg width="0" height="0" class="absolute" aria-hidden="true">
         <defs>
             <clipPath id={clipId} clipPathUnits="objectBoundingBox">
@@ -31,15 +31,16 @@ const normalizedTrapezoidPath =
     <button
         type="button"
         data-showcase-thumb
+        aria-label={`Ver ${item.id}`}
         aria-pressed={index === 0 ? "true" : "false"}
         data-active={index === 0 ? "true" : "false"}
-        style={`clip-path: url(#${clipId})`}
-        class="peer absolute inset-0 size-full cursor-pointer bg-reel-surface text-left transition-opacity duration-300 ease-reveal focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent data-[active=false]:opacity-60 data-[active=true]:opacity-100 hover:opacity-100 motion-reduce:transition-none"
+        style={`--thumb-clip: url(#${clipId})`}
+        class="showcase-thumb peer absolute inset-0 size-full cursor-pointer bg-reel-surface text-left transition-opacity duration-300 ease-reveal focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent data-[active=false]:opacity-80 data-[active=true]:opacity-100 data-[active=true]:ring-2 data-[active=true]:ring-reel-accent hover:opacity-100 md:data-[active=false]:opacity-60 md:data-[active=true]:ring-0 motion-reduce:transition-none"
     >
         <img
             src={item.thumbnailSrc}
             alt=""
-            class="aspect-[16/10] w-full object-cover md:aspect-[4/5]"
+            class="size-full object-cover md:size-auto md:aspect-[4/5] md:w-full"
             loading={index < 2 ? "eager" : "lazy"}
             decoding="async"
         />
@@ -48,7 +49,7 @@ const normalizedTrapezoidPath =
             aria-hidden="true"
         >
             <svg
-                class="w-[12px] h-[12px] text-gray-800 dark:text-white"
+                class="w-[14px] h-[14px] text-gray-800 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -68,7 +69,7 @@ const normalizedTrapezoidPath =
     </button>
 
     <svg
-        class="pointer-events-none absolute inset-0 size-full overflow-visible opacity-0 transition-opacity duration-300 ease-reveal peer-data-[active=true]:opacity-100 motion-reduce:transition-none"
+        class="showcase-thumb-outline pointer-events-none absolute inset-0 size-full overflow-visible opacity-0 transition-opacity duration-300 ease-reveal peer-data-[active=true]:opacity-100 motion-reduce:transition-none"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         aria-hidden="true"

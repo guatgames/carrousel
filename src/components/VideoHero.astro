@@ -8,29 +8,21 @@ interface Props {
 const { item } = Astro.props;
 ---
 
-<div class="absolute inset-x-0 top-14 bottom-0 -z-10 bg-taupe-950">
-    <video
-        data-showcase-video
-        class="absolute inset-0 size-full bg-taupe-950 object-cover"
-        poster={item.thumbnailSrc}
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        aria-hidden="true"
-        tabindex="-1"
-    ></video>
-    
-</div>
-
-<div class="relative flex flex-1 flex-col items-center justify-center px-5 pt-12 pb-[clamp(19rem,46vh,26rem)] text-center md:pb-[clamp(17rem,38vh,23rem)]">
-    
-    <h1
-        data-showcase-title
-        class="font-display text-[clamp(3.25rem,11vw,9rem)] leading-[0.92] tracking-[0.04em] uppercase text-taupe-100 [text-shadow:0_12px_48px_rgba(0,0,0,0.78)]"
-    >
-        {item.title}
-    </h1>
-    
+<div
+    class="relative aspect-[2/1] w-full shrink-0 bg-black shadow-[0_24px_60px_-36px_#000000e6] md:absolute md:inset-x-0 md:top-14 md:bottom-0 md:aspect-auto md:bg-taupe-950 md:shadow-none"
+>
+    <div class="absolute inset-0 overflow-hidden">
+        <video
+            data-showcase-video
+            class="size-full bg-black object-contain md:object-cover"
+            poster={item.thumbnailSrc}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-hidden="true"
+            tabindex="-1"
+        ></video>
+    </div>
 </div>

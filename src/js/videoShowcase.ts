@@ -17,7 +17,6 @@ export function initVideoShowcase(scope: HTMLElement): void {
     if (items.length === 0) return;
 
     const video = scope.querySelector<HTMLVideoElement>("[data-showcase-video]");
-    const title = scope.querySelector<HTMLElement>("[data-showcase-title]");
     const counter = scope.querySelector<HTMLElement>("[data-showcase-current]");
     const progress = scope.querySelector<HTMLElement>("[data-showcase-progress]");
     const playButton = scope.querySelector<HTMLButtonElement>("[data-showcase-play]");
@@ -35,7 +34,7 @@ export function initVideoShowcase(scope: HTMLElement): void {
     const volumeOnIcons = Array.from(scope.querySelectorAll<SVGElement>("[data-showcase-volume-on]"));
     const volumeOffIcons = Array.from(scope.querySelectorAll<SVGElement>("[data-showcase-volume-off]"));
 
-    if (!video || !title || !counter || !progress || !playButton) return;
+    if (!video || !counter || !progress || !playButton) return;
 
     let index = 0;
     let elapsed = 0;

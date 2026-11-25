@@ -7,11 +7,11 @@ const { total } = Astro.props;
 const pad = (value: number) => String(value).padStart(2, "0");
 ---
 
-<div class="mt-4 flex items-center justify-between gap-5 md:mt-6 bg-taupe-950/75">
-    <div class="flex h-full w-full items-center justify-between p-5 md:p-6">
+<div class="showcase-controls flex items-center justify-between gap-5 py-2 md:mt-6 md:bg-taupe-950/75 md:py-0">
+    <div class="flex h-full w-full items-center justify-between p-2 md:p-6">
         <div class="flex items-center align-middle gap-3 md:gap-4">
             <div class="flex items-center gap-2 md:gap-3">
-                <p class="font-display text-2xl tracking-[0.1em] m-2 text-taupe-100/75">
+                <p class="font-display text-xl tracking-[0.1em] m-0 text-taupe-100/75 md:text-2xl md:m-2">
                     <span
                         data-mobile-current
                         data-showcase-current
@@ -22,7 +22,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
                     <span class="text-taupe-100/30"> / {pad(total)}</span>
                 </p>
                 <div
-                    class="h-px w-20 overflow-hidden bg-taupe-100/15 md:w-40"
+                    class="h-px w-14 overflow-hidden bg-taupe-100/15 md:w-40"
                     aria-hidden="true"
                 >
                     <div
@@ -37,10 +37,10 @@ const pad = (value: number) => String(value).padStart(2, "0");
                 aria-label="Pausar video"
                 class="group flex items-center gap-2 text-taupe-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent  md:flex-row md:gap-4 md:rounded-full md:border md:border-taupe-100/25 md:bg-taupe-100/10 md:px-8 md:py-3 md:backdrop-blur-md md:transition-colors md:duration-200 md:hover:bg-taupe-100/20 motion-reduce:md:transition-none cursor-pointer"
             >
-                <span class="grid size-14 place-items-center rounded-full border border-taupe-100/45 bg-taupe-950/35 backdrop-blur-md transition-transform duration-300 ease-reveal group-hover:scale-105 md:size-6 md:border-0 md:bg-transparent md:backdrop-blur-none motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                <span class="grid size-9 place-items-center rounded-full border border-taupe-100/45 bg-taupe-950/35 backdrop-blur-md transition-transform duration-300 ease-reveal group-hover:scale-105 md:size-6 md:border-0 md:bg-transparent md:backdrop-blur-none motion-reduce:transition-none motion-reduce:group-hover:scale-100">
                     <svg
                         data-showcase-play-icon
-                        class="hidden w-6 h-6 text-gray-800 dark:text-white"
+                        class="hidden size-4 text-gray-800 dark:text-white md:size-6"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -56,7 +56,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
                     </svg>
                     <svg
                         data-showcase-pause-icon
-                        class="w-6 h-6 text-gray-800 dark:text-white"
+                        class="size-4 text-gray-800 dark:text-white md:size-6"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -82,7 +82,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
                     aria-label="Controlar volumen"
                     aria-expanded="false"
                     aria-controls="showcase-volume-panel"
-                    class="grid size-9 place-items-center rounded-full cursor-pointer bg-taupe-900/70 text-taupe-100/70 inset-ring-1 inset-ring-taupe-100/12 transition-[color,inset-ring-color,background-color] duration-200 hover:bg-taupe-900 hover:text-taupe-100 hover:inset-ring-taupe-100/25 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent motion-reduce:transition-none md:size-10"
+                    class="grid size-8 place-items-center rounded-full cursor-pointer bg-taupe-900/70 text-taupe-100/70 inset-ring-1 inset-ring-taupe-100/12 transition-[color,inset-ring-color,background-color] duration-200 hover:bg-taupe-900 hover:text-taupe-100 hover:inset-ring-taupe-100/25 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-reel-accent motion-reduce:transition-none md:size-10"
                 >
                     <svg
                         data-showcase-volume-on
@@ -182,7 +182,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
                 </div>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="hidden items-center gap-2 md:flex">
                 <button
                     type="button"
                     data-showcase-prev
@@ -232,7 +232,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
                     </svg>
                 </button>
             </div>
-            <h2 class="font-display text-[clamp(1.5rem,3vw,2.75rem)] leading-none tracking-[0.14em] text-taupe-100/90">
+            <h2 class="hidden font-display text-[clamp(1.5rem,3vw,2.75rem)] leading-none tracking-[0.14em] text-taupe-100/90 md:block">
                 VIDEOS
             </h2>
         </div>

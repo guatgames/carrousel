@@ -9,14 +9,21 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div data-showcase-selector-zone>
+<div data-showcase-selector-zone class="flex h-full w-full flex-col justify-center md:block">
+    <div class="flex items-center justify-between px-4 pb-2.5 md:hidden">
+        <h2 class="font-display text-lg tracking-[0.14em] text-taupe-100/90">VIDEOS</h2>
+        <span class="text-[10px] font-medium uppercase tracking-[0.2em] text-taupe-100/40">
+            Desliza para explorar
+        </span>
+    </div>
+
     <div
         data-showcase-selector
-        class="rounded-2xl border border-taupe-100/10 bg-taupe-950/72 p-3 shadow-[0_30px_80px_-40px_#000000e6] backdrop-blur-xl transition-[opacity,transform] duration-500 ease-reveal motion-reduce:transition-none md:rounded-[24px] md:p-4 data-[hidden=true]:pointer-events-none data-[hidden=true]:translate-y-3 data-[hidden=true]:opacity-0"
+        class="rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-none transition-[opacity,transform] duration-500 ease-reveal motion-reduce:transition-none md:rounded-[24px] md:border md:border-taupe-100/10 md:bg-taupe-950/72 md:p-4 md:shadow-[0_30px_80px_-40px_#000000e6] md:backdrop-blur-xl data-[hidden=true]:pointer-events-none data-[hidden=true]:translate-y-3 data-[hidden=true]:opacity-0"
     >
         <div
             data-showcase-strip
-            class="flex snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-4 md:overflow-visible pl-6"
+            class="flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-4 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:gap-2 md:overflow-visible md:px-0 md:py-0 md:pl-6"
         >
             {items.map((item, index) => <VideoThumbnail item={item} index={index} />)}
         </div>

@@ -31,4 +31,9 @@ export const showcaseItems: ShowcaseItem[] = [
         videoSrc: "/videos/videojuegos.mp4",
         thumbnailSrc: "/videos/videojuegos.jpg",
     },
+    {
+        id: "trato",
+        videoSrc: "/videos/Trato.mp4",
+        thumbnailSrc: "/videos/Trato.jpg",
+    },
 ];
